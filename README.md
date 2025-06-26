@@ -49,6 +49,7 @@ cp .env.example .env
 ```bash
 # This script connects to your remote DB and runs the setup SQL
 python setup_db.py
+```
 
 5. Run the server:
 ```bash
