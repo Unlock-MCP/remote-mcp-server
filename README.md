@@ -46,22 +46,9 @@ cp .env.example .env
 ```
 
 4. Set up your database schema:
-```sql
--- Connect to your PostgreSQL database and run:
-CREATE TABLE products (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    category TEXT,
-    price NUMERIC(10, 2),
-    stock INTEGER
-);
-
-INSERT INTO products (name, category, price, stock) VALUES
-  ('Laptop Pro', 'Electronics', 1499.99, 50),
-  ('Smart Watch', 'Electronics', 299.50, 120),
-  ('Office Chair', 'Furniture', 175.00, 80),
-  ('Project Planner', 'Office Supplies', 25.99, 200);
-```
+```bash
+# This script connects to your remote DB and runs the setup SQL
+python setup_db.py
 
 5. Run the server:
 ```bash
@@ -121,6 +108,14 @@ FROM products
 GROUP BY category;
 ```
 
+### Vercel Deployment
+
+This repository includes a `vercel.json` file for easy deployment to [Vercel](https://vercel.com).
+
+1.  Create a new project on Vercel and link your GitHub repository.
+2.  In the Vercel project settings, go to the "Environment Variables" section.
+3.  Add a **Secret** named `database_url` and set its value to your PostgreSQL connection string. The `vercel.json` file will automatically use this secret for the `DATABASE_URL` environment variable during deployment.
+
 ## Architecture
 
 This server uses:
@@ -138,6 +133,8 @@ This server uses:
 - Read-only database access by default
 - Input validation and SQL injection prevention
 - OAuth 2.1 authentication framework support (extensible)
+
+- **Query Safegaurds**: The server currently allows any `SELECT` query. For high-security production systems, consider implementing a more robust query parser, using an Object-Relational Mapper (ORM) like SQLAlchemy to construct queries programmatically, or exposing only specific, parameterized functions instead of raw SQL execution.
 
 ## Related Resources
 
